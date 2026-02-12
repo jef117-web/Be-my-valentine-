@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message from Jefferson</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+            margin: 0;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 20px;
+            animation: float 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        h1 { color: #c9184a; font-size: 2.5rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+        
+        .container { z-index: 10; padding: 20px; }
+
+        .buttons { display: flex; gap: 20px; justify-content: center; align-items: center; min-height: 100px; }
+        
+        button {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #808080; color: white; position: absolute; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="question" class="container">
+        <h1>Will you be Jefferson's Valentine? ❤️</h1>
+        <div class="buttons">
+            <button id="yesBtn">YES!</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="success" class="container hidden">
+        <h1>I knew you'd say yes! 🥰</h1>
+        <p style="font-size: 1.5rem; color: #ff4d6d;">- Yours truly, Jefferson</p>
+        <p style="font-size: 5rem;">🌹✨🥂</p>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const question = document.getElementById('question');
+        const success = document.getElementById('success');
+
+        let yesScale = 1;
+
+        // Make the "No" button dodge the mouse
+        const moveButton = () => {
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+
+            // Growing the Yes button as a "gentle suggestion"
+            yesScale += 0.15;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        };
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('click', moveButton); // For mobile users who tap
+
+        yesBtn.addEventListener('click', () => {
+            question.classList.add('hidden');
+            success.classList.remove('hidden');
+        });
+
+        // Generate background hearts
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }, 500);
+    </script>
+</body>
+</html>
